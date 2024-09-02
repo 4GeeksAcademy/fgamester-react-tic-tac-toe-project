@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import GameBoxes from "./GameBoxes.jsx"
 
-const cells = [null, null, null,
+/* const cells = [null, null, null,
     null, null, null,
-    null, null, null];
+    null, null, null]; */
 
-const Board = ({ playing, gameTurn, setGameTurn, setPlaying, setWinner }) => {
+const Board = ({ gameTurn, setGameTurn, playing, setPlaying, winner, setWinner, count, setCount, setRestart }) => {
+
+    const [cells, setCells] = useState([null, null, null, null, null, null, null, null, null])
 
     const winnerCheck = () => {
         const winnerLines = [
@@ -23,16 +25,35 @@ const Board = ({ playing, gameTurn, setGameTurn, setPlaying, setWinner }) => {
             if (cells[a] !== null && cells[a] === cells[b] && cells[a] === cells[c]) {
                 setWinner(true)
                 setPlaying(false)
+                setRestart(true)
             }
+        }
+    }
+
+    const settingCells = (index, newValue) => {
+        const newCells = cells.map((cell, i) =>
+            i === index ? newValue : cell
+        );
+        setCells(newCells);
+    };
+
+    const gameCheck = () => {
+        if (!winner && count >= 9) {
+            setPlaying(false)
+            setRestart(true)
+            console.log("no hay ganador")
         }
     }
 
     const handleClick = useCallback((index) => {
         if (cells[index] === null && playing) {
-            cells[index] = gameTurn
+            settingCells(index, gameTurn)
+            // cells[index] = gameTurn
+            setCount(count + 1)
+            winnerCheck()
             setGameTurn(!gameTurn)
+            gameCheck()
         }
-        winnerCheck()
     });
 
     return (
