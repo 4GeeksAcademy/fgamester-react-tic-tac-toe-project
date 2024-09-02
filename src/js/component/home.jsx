@@ -1,11 +1,13 @@
-import React from "react";
-import Board from "./Board.jsx"
+import React, { useState } from "react";
+import Game from "./Game";
 
 
 const Home = () => {
 
 	return (
-		<Board />
+		<>
+			<Game />
+		</>
 	);
 };
 
