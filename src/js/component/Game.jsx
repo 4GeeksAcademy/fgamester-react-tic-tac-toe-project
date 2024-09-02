@@ -26,7 +26,7 @@ const Game = () => {
                 <>
                     <>{turnMessage}</>
                     <>{theGame}</>
-                    <>{restart ? (<>{restartButton}</>) : (<></>)}</>
+                    <>{restart && (<>{restartButton}</>)}</>
                 </>
             )
             }

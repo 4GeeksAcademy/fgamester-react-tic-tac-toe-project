@@ -9,16 +9,16 @@ const Board = ({ gameTurn, setGameTurn, playing, setPlaying, winner, setWinner, 
 
     const [cells, setCells] = useState([null, null, null, null, null, null, null, null, null])
 
-    const winnerCheck = () => {
+    const winnerCheck = (cells) => {
         const winnerLines = [
             [0, 1, 2],
+            [2, 4, 6],
             [3, 4, 5],
             [6, 7, 8],
             [0, 3, 6],
             [1, 4, 7],
             [2, 5, 8],
             [0, 4, 8],
-            [2, 4, 6],
         ];
         for (let i = 0; i < winnerLines.length; i++) {
             const [a, b, c] = winnerLines[i];
@@ -26,52 +26,55 @@ const Board = ({ gameTurn, setGameTurn, playing, setPlaying, winner, setWinner, 
                 setWinner(true)
                 setPlaying(false)
                 setRestart(true)
+                break;
             }
         }
     }
 
-    const settingCells = (index, newValue) => {
-        const newCells = cells.map((cell, i) =>
-            i === index ? newValue : cell
-        );
-        setCells(newCells);
+    const settingCells = (i, value) => {
+        let updateCells = [...cells]
+        updateCells[i] = value;
+        setCells(updateCells)
     };
 
-    const gameCheck = () => {
-        if (!winner && count >= 9) {
+    const gameCheck = (winner, count) => {
+        if (!winner && count == 8) {
             setPlaying(false)
             setRestart(true)
-            console.log("no hay ganador")
         }
     }
 
-    const handleClick = useCallback((index) => {
+    const handleClick = (index, cells, winner, count) => {
         if (cells[index] === null && playing) {
-            settingCells(index, gameTurn)
+            // settingCells(index, gameTurn)
             // cells[index] = gameTurn
+            let updateCells = [...cells]
+            updateCells[index] = gameTurn;
+            setCells(updateCells)
+            //
             setCount(count + 1)
-            winnerCheck()
+            winnerCheck(updateCells)
             setGameTurn(!gameTurn)
-            gameCheck()
+            gameCheck(winner, count)
         }
-    });
+    };
 
     return (
         <div className="d-flex flex-column align-items-center m-2">
             <div className="d-flex">
-                <GameBoxes paintIt={() => handleClick(0)} painted={cells[0] !== null} icon={cells[0]} />
-                <GameBoxes paintIt={() => handleClick(1)} painted={cells[1] !== null} icon={cells[1]} />
-                <GameBoxes paintIt={() => handleClick(2)} painted={cells[2] !== null} icon={cells[2]} />
+                <GameBoxes paintIt={() => handleClick(0, cells, winner, count)} painted={cells[0] !== null} icon={cells[0]} />
+                <GameBoxes paintIt={() => handleClick(1, cells, winner, count)} painted={cells[1] !== null} icon={cells[1]} />
+                <GameBoxes paintIt={() => handleClick(2, cells, winner, count)} painted={cells[2] !== null} icon={cells[2]} />
             </div>
             <div className="d-flex">
-                <GameBoxes paintIt={() => handleClick(3)} painted={cells[3] !== null} icon={cells[3]} />
-                <GameBoxes paintIt={() => handleClick(4)} painted={cells[4] !== null} icon={cells[4]} />
-                <GameBoxes paintIt={() => handleClick(5)} painted={cells[5] !== null} icon={cells[5]} />
+                <GameBoxes paintIt={() => handleClick(3, cells, winner, count)} painted={cells[3] !== null} icon={cells[3]} />
+                <GameBoxes paintIt={() => handleClick(4, cells, winner, count)} painted={cells[4] !== null} icon={cells[4]} />
+                <GameBoxes paintIt={() => handleClick(5, cells, winner, count)} painted={cells[5] !== null} icon={cells[5]} />
             </div>
             <div className="d-flex">
-                <GameBoxes paintIt={() => handleClick(6)} painted={cells[6] !== null} icon={cells[6]} />
-                <GameBoxes paintIt={() => handleClick(7)} painted={cells[7] !== null} icon={cells[7]} />
-                <GameBoxes paintIt={() => handleClick(8)} painted={cells[8] !== null} icon={cells[8]} />
+                <GameBoxes paintIt={() => handleClick(6, cells, winner, count)} painted={cells[6] !== null} icon={cells[6]} />
+                <GameBoxes paintIt={() => handleClick(7, cells, winner, count)} painted={cells[7] !== null} icon={cells[7]} />
+                <GameBoxes paintIt={() => handleClick(8, cells, winner, count)} painted={cells[8] !== null} icon={cells[8]} />
             </div>
         </div>
     );

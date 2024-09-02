@@ -1,6 +1,6 @@
 import React from "react";
 
-const Restart = ({ key, setKey, setRestart, setPlaying, setInMenu, setWinner, setCount }) => {
+const Restart = ({ setRestart, setPlaying, setInMenu, setWinner, setCount }) => {
 
     const restart = () => {
         setPlaying(false)
