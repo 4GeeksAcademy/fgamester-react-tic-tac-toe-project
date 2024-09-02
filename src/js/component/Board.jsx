@@ -5,15 +5,34 @@ const cells = [null, null, null,
     null, null, null,
     null, null, null];
 
-const Board = ({ playMode = true, setGameTurn }) => {
-    const [turn, setTurn] = useState(true)
+const Board = ({ playing, gameTurn, setGameTurn, setPlaying, setWinner }) => {
+
+    const winnerCheck = () => {
+        const winnerLines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+        for (let i = 0; i < winnerLines.length; i++) {
+            const [a, b, c] = winnerLines[i];
+            if (cells[a] !== null && cells[a] === cells[b] && cells[a] === cells[c]) {
+                setWinner(true)
+                setPlaying(false)
+            }
+        }
+    }
 
     const handleClick = useCallback((index) => {
-        if (cells[index] === null && playMode) {
-            cells[index] = turn
-            setTurn(!turn)
-            setGameTurn(!turn)
+        if (cells[index] === null && playing) {
+            cells[index] = gameTurn
+            setGameTurn(!gameTurn)
         }
+        winnerCheck()
     });
 
     return (

@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react"
 
-const TurnMessage = ({ messageTurn = true }) => {
+const TurnMessage = ({ gameTurn, winner }) => {
 
-
-    const [turn, setTurn] = useState(true)
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
-        setTurn(messageTurn)
-    }, [messageTurn])
+        if (winner) setMessage(< h1 className="text-center" > The winner is {!gameTurn ? "O" : "X"} </h1>)
+        else setMessage(< h1 className="text-center" > It's {gameTurn ? "O" : "X"} turn </h1>)
+    }, [gameTurn])
 
     return (
-        <h1>It's {turn ? "O" : "X"} turn</h1>
+
+        <div>
+            {message}
+        </div>
+
     )
 
 }
