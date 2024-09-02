@@ -5,18 +5,19 @@ const cells = [null, null, null,
     null, null, null,
     null, null, null];
 
-const Board = ({ playing = true, playerTurn }) => {
+const Board = ({ playMode = true, setGameTurn }) => {
     const [turn, setTurn] = useState(true)
 
     const handleClick = useCallback((index) => {
-        if (cells[index] === null && playing) {
-            cells[index] = turn;
-            setTurn(!turn);
+        if (cells[index] === null && playMode) {
+            cells[index] = turn
+            setTurn(!turn)
+            setGameTurn(!turn)
         }
     });
 
     return (
-        <div className="d-flex flex-column align-items-center m-2" onClick={() => playerTurn()}>
+        <div className="d-flex flex-column align-items-center m-2">
             <div className="d-flex">
                 <GameBoxes paintIt={() => handleClick(0)} painted={cells[0] !== null} icon={cells[0]} />
                 <GameBoxes paintIt={() => handleClick(1)} painted={cells[1] !== null} icon={cells[1]} />
